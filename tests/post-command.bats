@@ -44,7 +44,7 @@ teardown() {
   stub jq \
     "'.CodeSha256' : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
 
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_success
   assert_output --partial "upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip"
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
@@ -70,7 +70,7 @@ teardown() {
     "'.CodeSha256' : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
 
   touch fake/path/myfunc-2323.zip
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_success
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
 
@@ -95,7 +95,7 @@ teardown() {
     "'.CodeSha256' : echo 'TWpJeU1qSXlNakl5TWpJSwo='"
 
   touch myfunc-2323.zip
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_success
   assert_output --partial "S3 bucket or key not provided, copying up zip file direct to lambda"
   assert_output --partial "Successfully uploaded new function code with SHA TWpJeU1qSXlNakl5TWpJSwo="
@@ -119,7 +119,7 @@ teardown() {
   stub jq \
     "'.CodeSha256' : echo 'NOTAGOODSHA'"
 
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_failure
   assert_output --partial "upload: test.txt to s3://myfuncbucket/deploy_code/production/myfunc-2323.zip"
   assert_output --partial "zip file (TWpJeU1qSXlNakl5TWpJSwo=) does not match the returned checksum from AWS (NOTAGOODSHA)"
@@ -134,7 +134,7 @@ teardown() {
 @test "Command runs with error when zip file path not found" {
   export BUILDKITE_PLUGIN_LAMBDA_DEPLOY_PATH="fake/path/not/found"
 
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_failure
   assert_output --partial "🚨: Path for zip file not found"
 }
@@ -144,7 +144,7 @@ teardown() {
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_S3_KEY
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_ZIP_FILE
 
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_failure
   assert_output --partial "🚨: You must supply a zip file name"
 }
@@ -152,7 +152,7 @@ teardown() {
 @test "Command errors if no function name given" {
   unset BUILDKITE_PLUGIN_LAMBDA_DEPLOY_FUNCTION_NAME
 
-  run "$PWD/hooks/command"
+  run "$PWD/hooks/post-command"
   assert_failure
   assert_output --partial "🚨: You must supply a function name"
 }

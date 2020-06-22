@@ -6,12 +6,12 @@ services:
       - ".:/plugin:rw"
   lint:
     image: "buildkite/plugin-linter"
-    command: ["--id", "envato/lambda-deploy"]
+    command: ["--id", "risepeopleinc/lambda-deploy"]
     volumes:
       - ".:/plugin:ro"
   shell_check:
     image: koalaman/shellcheck
-    command: ["--color=always", "hooks/command"]
+    command: ["--color=always", "hooks/**"]
     working_dir: /plugin
     volumes:
       - ".:/plugin:ro"

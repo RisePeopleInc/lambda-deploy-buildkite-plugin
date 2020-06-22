@@ -1,6 +1,8 @@
 # Lambda Deploy Buildkite Plugin
 
-A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying AWS Lambda function code.
+A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying AWS Lambda function code. 
+
+This is forked to change the hook to a `post-command` so command opperations can be completed to prepare the directory for creating the zip deployment artifact.
 
 ## Deploying Lambda Function Code
 
@@ -8,7 +10,7 @@ A [Buildkite plugin](https://buildkite.com/docs/agent/v3/plugins) for deploying 
 steps:
   - name: deploy
     plugins:
-      -  envato/lambda-deploy#v1.1.1:
+      -  risepeopleinc/lambda-deploy#v1.1.2:
           function_name: myfunction
           zip_file: deploy-version.zip
           path: path/to/deploy/code
