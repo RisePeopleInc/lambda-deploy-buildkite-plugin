@@ -9,6 +9,7 @@ This is forked to change the hook to a `post-command` so command opperations can
 ```yml
 steps:
   - name: deploy
+    command: "npm install"
     plugins:
       -  risepeopleinc/lambda-deploy#v1.1.2:
           function_name: myfunction
